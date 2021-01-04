@@ -2,7 +2,8 @@ package com.napptilus.willywonka.api.controller;
 
 import com.napptilus.willywonka.api.request.OLRequest;
 import com.napptilus.willywonka.api.response.OLResponse;
-import com.napptilus.willywonka.document.OompaLoompa;
+import com.napptilus.willywonka.entity.OompaLoompa;
+import com.napptilus.willywonka.exception.NapptilusException;
 import com.napptilus.willywonka.reactive.service.IOompaLoompaService;
 import io.swagger.annotations.ApiOperation;
 import lombok.extern.slf4j.Slf4j;
@@ -70,7 +71,7 @@ public class OompaLoompaController {
      */
     @ApiOperation(value = "Get Oompa Loompa Object By Id")
     @GetMapping("/{id}")
-    public ResponseEntity<Mono<OompaLoompa>> getOompaLoompaByID(@PathVariable("id") String id) {
+    public ResponseEntity<Mono<OompaLoompa>> getOompaLoompaByID(@PathVariable("id") Long id) throws NapptilusException {
         LOG.info("Open getOompaLoompaByID {}", this.getClass().getSimpleName());
         return ResponseEntity.ok(oompaLoompaService.findById(id).cache(Duration.ofSeconds(2)));
     }
@@ -99,7 +100,7 @@ public class OompaLoompaController {
      */
     @ApiOperation(value = "Update OompaLoompa")
     @PutMapping("/{id}")
-    public ResponseEntity<Mono<OompaLoompa>> updateOompaLoompaByID(@PathVariable("id") String id, @RequestBody OLRequest olRequest) {
+    public ResponseEntity<Mono<OompaLoompa>> updateOompaLoompaByID(@PathVariable("id") Long id, @RequestBody OLRequest olRequest) throws NapptilusException {
         LOG.info("Open updateOompaLoompaByID {}", this.getClass().getSimpleName());
         Mono<OompaLoompa> savedOompaLoompa = oompaLoompaService.findById(id);
 

@@ -4,7 +4,6 @@ import com.napptilus.willywonka.core.SwaggerNegated;
 import com.napptilus.willywonka.helper.AuthHelper;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
-import org.springframework.stereotype.Component;
 import org.springframework.web.bind.annotation.RestController;
 import springfox.documentation.builders.ApiInfoBuilder;
 import springfox.documentation.builders.PathSelectors;

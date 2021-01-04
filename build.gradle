@@ -30,23 +30,26 @@ ext {
 
 dependencies {
 
-	implementation 'org.springframework.boot:spring-boot-starter-data-mongodb-reactive'
+	implementation 'org.springframework.boot:spring-boot-starter-data-jpa'
 	implementation 'org.springframework.boot:spring-boot-starter-web'
 	implementation 'org.springframework.boot:spring-boot-starter-webflux'
 	implementation "com.github.ulisesbocchio:jasypt-spring-boot-starter:${jasyptSpringbootVersion}"
 	implementation "io.springfox:springfox-boot-starter:${ioSpringfoxVersion}"
 	implementation group: 'org.apache.commons', name: 'commons-lang3', version: "${commonsLangVersion}"
+	implementation "jakarta.validation:jakarta.validation-api"
 
-	if (project.hasProperty("embedded")) { //dev and test will use embedded
-		implementation group: 'de.flapdoodle.embed', name: 'de.flapdoodle.embed.mongo', version: "${embeddedMongoVersion}"
-	}
+	implementation 'org.flywaydb:flyway-core'
+	runtimeOnly 'org.springframework.boot:spring-boot-properties-migrator'
+	runtimeOnly 'mysql:mysql-connector-java'
 
 	compileOnly 'org.projectlombok:lombok'
 	annotationProcessor 'org.projectlombok:lombok'
 	providedRuntime 'org.springframework.boot:spring-boot-starter-tomcat'
-	testImplementation 'org.springframework.boot:spring-boot-starter-test'
+	testImplementation('org.springframework.boot:spring-boot-starter-test') {
+		exclude group: 'org.junit.vintage', module: 'junit-vintage-engine'
+	}
 	testImplementation 'io.projectreactor:reactor-test'
-	testImplementation group: 'de.flapdoodle.embed', name: 'de.flapdoodle.embed.mongo', version: "${embeddedMongoVersion}"
+
 }
 
 dependencyManagement {

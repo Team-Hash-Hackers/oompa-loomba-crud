@@ -1,7 +1,7 @@
 package com.napptilus.willywonka.unit;
 
 import com.napptilus.willywonka.api.controller.OompaLoompaController;
-import com.napptilus.willywonka.document.OompaLoompa;
+import com.napptilus.willywonka.entity.OompaLoompa;
 import com.napptilus.willywonka.reactive.repository.OompaLoompaRepository;
 import com.napptilus.willywonka.reactive.service.IOompaLoompaService;
 import org.junit.jupiter.api.DisplayName;
@@ -84,7 +84,7 @@ public class OompaLoompaControllerTest {
 
         Mockito.when(oompaLoompaService.findAll()).thenReturn(oompaLoompaFlux);
 
-        List<OompaLoompa> oompaLoompaList = webClient.get().uri("/api")
+        List<OompaLoompa> oompaLoompaList = webClient.get().uri("/api/oompaloompas")
                 .header(HttpHeaders.ACCEPT, MediaType.APPLICATION_JSON_VALUE)
                 .exchange()
                 .expectStatus().isOk()
@@ -103,7 +103,7 @@ public class OompaLoompaControllerTest {
     @DisplayName(value = "Get OompaLoompa By Id")
     void testGetOompaLoompaById() {
         OompaLoompa oompaLoompa = OompaLoompa.builder()
-                .id("9456789987678")
+                .id(Long.valueOf(1))
                 .name("Stark").age(Short.parseShort("55"))
                 .height(50.3f).weight(68.8f)
                 .jobTitle("Senior Supervisor").description("Joined on Dec 2018")
@@ -111,15 +111,15 @@ public class OompaLoompaControllerTest {
 
         Mono<OompaLoompa> oompaLoompaMono = Mono.just(oompaLoompa);
 
-        Mockito.when(oompaLoompaService.findById("9456789987678")).thenReturn(oompaLoompaMono);
+        Mockito.when(oompaLoompaService.findById(Long.valueOf(1))).thenReturn(oompaLoompaMono);
 
-        webClient.get().uri("/api/{id}", "9456789987678")
+        webClient.get().uri("/api/oompaloompas/{id}", Long.valueOf(1))
                 .header(HttpHeaders.ACCEPT, MediaType.APPLICATION_JSON_VALUE)
                 .exchange()
                 .expectStatus().isOk()
                 .expectBody(OompaLoompa.class);
 
-        Mockito.verify(oompaLoompaService, times(1)).findById("9456789987678");
+        Mockito.verify(oompaLoompaService, times(1)).findById(Long.valueOf(1));
     }
 
     /**
@@ -130,7 +130,7 @@ public class OompaLoompaControllerTest {
     @DisplayName(value = "Get OompaLoompa By Id And JsonPath")
     void testGetOompaLoompaByIDWithJsonPath() {
         OompaLoompa oompaLoompa = OompaLoompa.builder()
-                .id("9456789987678")
+                .id(Long.valueOf(1))
                 .name("Stark").age(Short.parseShort("55"))
                 .height(50.3f).weight(68.8f)
                 .jobTitle("Senior Supervisor").description("Joined on Dec 2018")
@@ -138,19 +138,19 @@ public class OompaLoompaControllerTest {
 
         Mono<OompaLoompa> oompaLoompaMono = Mono.just(oompaLoompa);
 
-        Mockito.when(oompaLoompaService.findById("9456789987678")).thenReturn(oompaLoompaMono);
+        Mockito.when(oompaLoompaService.findById(Long.valueOf(1))).thenReturn(oompaLoompaMono);
 
-        webClient.get().uri("/api/{id}", "9456789987678")
+        webClient.get().uri("/api/oompaloompas/{id}", Long.valueOf(1))
                 .header(HttpHeaders.ACCEPT, MediaType.APPLICATION_JSON_VALUE)
                 .exchange()
                 .expectStatus().isOk()
                 .expectBody()
                 .jsonPath("$.name").isNotEmpty()
-                .jsonPath("$.id").isEqualTo("9456789987678")
+                .jsonPath("$.id").isEqualTo(Long.valueOf(1))
                 .jsonPath("$.height").isEqualTo(50.3f)
                 .jsonPath("$.weight").isEqualTo(68.8f);
 
-        Mockito.verify(oompaLoompaService, times(1)).findById("9456789987678");
+        Mockito.verify(oompaLoompaService, times(1)).findById(Long.valueOf(1));
 
     }
 
@@ -162,7 +162,7 @@ public class OompaLoompaControllerTest {
     @DisplayName(value = "Save OompaLoompa")
     void testPostOompaLoompa() {
         OompaLoompa oompaLoompa = OompaLoompa.builder()
-                .id("567898765678")
+                .id(Long.valueOf(1))
                 .name("John").age(Short.parseShort("26"))
                 .height(57.3f).weight(88.8f)
                 .jobTitle("Supervisor Tester").description("Joined on July 2020")
@@ -171,7 +171,7 @@ public class OompaLoompaControllerTest {
         Mockito.when(oompaLoompaService.save(any())).thenReturn(Mono.just(oompaLoompa));
 
         OompaLoompa responseBody = webClient.post()
-                .uri("/api")
+                .uri("/api/oompaloompas")
                 .contentType(MediaType.APPLICATION_JSON)
                 .body(BodyInserters.fromValue(oompaLoompa))
                 .exchange()
@@ -191,7 +191,7 @@ public class OompaLoompaControllerTest {
     @DisplayName(value = "Update OompaLoompa")
     void testUpdateOompaLoompa() {
         OompaLoompa oompaLoompa = OompaLoompa.builder()
-                .id("567898765678")
+                .id(Long.valueOf(1))
                 .name("John").age(Short.parseShort("26"))
                 .height(57.3f).weight(88.8f)
                 .jobTitle("Supervisor Tester").description("Joined on July 2020")
@@ -199,19 +199,19 @@ public class OompaLoompaControllerTest {
 
         OompaLoompa updatedOompaLoompa = oompaLoompa.toBuilder().name("John Smith").build();
 
-        Mockito.when(oompaLoompaService.findById("567898765678")).thenReturn(Mono.just(oompaLoompa));
+        Mockito.when(oompaLoompaService.findById(Long.valueOf(1))).thenReturn(Mono.just(oompaLoompa));
 
         Mockito.when(oompaLoompaService.save(any())).thenReturn(Mono.just(updatedOompaLoompa));
 
         OompaLoompa responseBody = webClient.put()
-                .uri("/api/{id}", "567898765678")
+                .uri("/api/oompaloompas/{id}", Long.valueOf(1))
                 .contentType(MediaType.APPLICATION_JSON)
                 .body(BodyInserters.fromValue(oompaLoompa))
                 .exchange()
                 .expectStatus().isOk()
                 .expectBody(OompaLoompa.class).returnResult().getResponseBody();
 
-        Mockito.verify(oompaLoompaService, times(1)).findById("567898765678");
+        Mockito.verify(oompaLoompaService, times(1)).findById(Long.valueOf(1));
         Mockito.verify(oompaLoompaService, times(1)).save(any());
         assertThat(responseBody).isNotNull();
         assertThat(responseBody.getName()).isEqualTo("John Smith");
