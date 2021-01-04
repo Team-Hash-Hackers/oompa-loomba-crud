@@ -41,12 +41,12 @@ detailed information about deployment, go to `documentations` folder and see the
 
 ###### API Contract Specs
 
-The API Specs Contract Documentation is find in the [Api-contract.md](https://github.com/riyas90cse/oompa-loomba-crud/blob/main/documentations/Api-contract.md) from the `documentations` folder.
+The API Specs Contract Documentation is found in the [Api-contract.md](https://github.com/riyas90cse/oompa-loomba-crud/blob/main/documentations/Api-contract.md) from the `documentations` folder.
 
 ###### Tools & Technology Stack Used
 * Java 11
 * Spring Boot
-* MongoDB
+* MySQL
 * Spring WebFlux
 * REST API
 * Lombok
@@ -56,13 +56,11 @@ The API Specs Contract Documentation is find in the [Api-contract.md](https://gi
 * Jasypt Spring Boot (For encryption)
 * Reactor (Reactive Programming)
 * Apache Commons
-* Embedded Mongo DB (For Development and Test Environment)
-* Mongo Docker Container (For Staging Environment)
 * OpenAPI (Swagger Documentation)
 * Docker (For containerization)
 * Docker Compose (For Deployment)
 
-The Above tools and technology stack specifications are find in the document [HELP.md](https://github.com/riyas90cse/oompa-loomba-crud/blob/main/documentations/HELP.md) from `documentations` folder.
+The Above tools and technology stack specifications are found in the document [HELP.md](https://github.com/riyas90cse/oompa-loomba-crud/blob/main/documentations/HELP.md) from `documentations` folder.
 
 ##### Execute the application:
 The app uses JasyptSpringBoot for encrypting plain text in the application properties. The encryption requires environment based password. The spring boot application has two profiles defined.
@@ -79,19 +77,6 @@ The value `napptilus-service` is used to encrypt the plaintext. You can use a di
 
 After setting up the system environment values, you can execute the following commands.
 
-##### Open mongo shell and run this:
-To run it in production mode, we need to run this query before starting.
-
-> use admin;
-
-> db.createUser(
->  {
->  user: "root",
->  pwd: "root",
->  roles: [ "readWrite", "dbAdmin" ]
->  }
-> );
-
 ##### Build without tests:
 `./gradlew clean build -x test`
 
@@ -107,7 +92,7 @@ To run only tests, execute the following.
 `./gradlew test`
 
 ###### Gotcha #1:
-In order to test the application, CORS is enabled for all. You can find `*` in the app origins.
+In order to test the application, CORS is enabled for all. You can found `*` in the app origins.
 
 napptilus.app.origins = https://oompa-service.napptilus.com,*
 
@@ -156,7 +141,7 @@ There is a dedicated project to set up docker container. It has various scripts 
 > 2. services.Dockerfile is creating the base image.
 > 3. docker-compose.yml has definitions to generate 3 docker containers. One api service, one mongodb, and one mongo express to connect with mongo container.
 > 4. Dockerfile is placed under napptilus-web/api folder.
-> 5. oompaloompa.env is used to setup the system environment.
+> 5. oompaloompa.env is used to set up the system environment.
 
 #### Run docker compose:
 
@@ -168,6 +153,15 @@ There is a dedicated project to set up docker container. It has various scripts 
 
 ***
 
+### Swagger UI
+
+OpenAPI(Swagger3) has been used for API Documentation. As soon as application is up, the swagger ui can be found under the below URI.
+
+> http://localhost:9001/swagger-ui/
+>
+![Screenshot](https://github.com/riyas90cse/oompa-loomba-crud/blob/main/documentations/screenshot-swagger.png)
+*** 
+
 ### Tests
 JUnit 5, Spring Test have been used along with Mockito, reactor-test. There are 3 tests.
 
@@ -176,25 +170,24 @@ JUnit 5, Spring Test have been used along with Mockito, reactor-test. There are 
 
 Test coverage is 45-50%. Tests are aimed to cover most required test cases.
 
+In order to execute Integration Test please ensure the following system environment, there are two values set in the system environment.
+
+1. SPRING_PROFILES_ACTIVE=`dev`
+2. APP_ENCRYPTION_PASSWORD=napptilus-service
+
+***
+
+### Postman collection:
+Use this [postman collection](https://github.com/riyas90cse/oompa-loomba-crud/blob/main/documentations/data/napptilus-api.json) to test the api service.
+
 ***
 
 ### Improvements to consider:
 1. Hamcrest can be used.
 2. Avoid setter injection, use constructor injection.
 3. The application can be slightly modified to cover more tests.
-4. Use kubernetes instead of docker compose.
+4. Can Use kubernetes instead of docker compose.
 
 *** 
-
-### Postman collection:
-Use this [postman collection](https://github.com/riyas90cse/oompa-loomba-crud/blob/main/documentations/data/napptilus-api.json) to test the api service.
-
-*** 
-
-### Swagger UI
-
-OpenAPI(Swagger3) has been used for API Documentation. As soon as application is up, the swagger ui can be found under the below URI.
-
-> http://localhost:20211/swagger-ui/
 
 
